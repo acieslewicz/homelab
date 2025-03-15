@@ -1,0 +1,6 @@
+---
+- name: Update LXC Containers
+  hosts: proxmox_all_lxc
+
+  roles:
+    - update
