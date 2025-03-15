@@ -1,0 +1,11 @@
+# Environment
+.envrc
+
+# Ansible
+.ansible
+.vault
+
+# OpenTofu
+.terraform
+*.tfstate.backup
+*.tfstate
