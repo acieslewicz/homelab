@@ -14,30 +14,30 @@
                     - :443
                   routes:
                     - match:
-                      - host:
-                          - '*.home.tinymagellanic.cloud'
+                        - host:
+                            - "*.home.tinymagellanic.cloud"
                       handle:
-                      - handler: subroute
-                        routes:
-                          - match:
-                            - host:
-                              - proxmox.home.tinymagellanic.cloud
-                            handle:
-                              - handler: reverse_proxy
-                                upstreams:
-                                  - dial: hypervisor1.home.tinymagellanic.cloud:8006
-                                transport:
-                                  protocol: http
-                                  tls: {}
-                          - handle:
-                            - handler: static_response
-                              abort: true
+                        - handler: subroute
+                          routes:
+                            - match:
+                                - host:
+                                    - proxmox.home.tinymagellanic.cloud
+                              handle:
+                                - handler: reverse_proxy
+                                  upstreams:
+                                    - dial: hypervisor1.home.tinymagellanic.cloud:8006
+                                  transport:
+                                    protocol: http
+                                    tls: {}
+                            - handle:
+                                - handler: static_response
+                                  abort: true
                       terminal: true
             tls:
               automation:
                 policies:
                   - subjects:
-                    - '*.home.tinymagellanic.cloud'
+                      - "*.home.tinymagellanic.cloud"
                     issuers:
                       - module: acme
                         email: alexander.cieslewicz@gmail.com
@@ -53,4 +53,3 @@
                                 6439373136313931660a316261356363313331393539396664623562333062633533303962666365
                                 38613031643931323334313238626633373162376562663463306566323463356566376436313035
                                 3639646136663365396238323564396461356263616138373639
-            

@@ -1,12 +1,12 @@
 ---
 - name: Reload Caddy
-  service:
+  ansible.builtin.service:
     name: caddy
     state: reloaded
   when: (caddy_config_mode | lower == 'caddyfile')
 
 - name: Restart Caddy
-  service:
+  ansible.builtin.service:
     name: caddy
     state: restarted
   when: (caddy_config_mode | lower == 'json')

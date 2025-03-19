@@ -6,10 +6,9 @@
     - role: update
     - role: caddy_server
       vars:
-        caddy_config_mode: json
-        caddy_plugins:
+        caddy_server_caddy_config_mode: json
+        caddy_server_caddy_plugins:
           - github.com/caddy-dns/cloudflare
-
 
 - name: Configure Caddy
   import_playbook: configure_proxy.yml
