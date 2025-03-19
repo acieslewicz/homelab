@@ -1,0 +1,3 @@
+---
+- name: Install Caddy
+  include_tasks: install_caddy.yml

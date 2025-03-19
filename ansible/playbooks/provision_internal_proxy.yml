@@ -1,0 +1,15 @@
+---
+- name: Provision Caddy Reverse Proxy
+  hosts: HOME-PROXY-001
+
+  roles:
+    - role: update
+    - role: caddy_server
+      vars:
+        caddy_config_mode: json
+        caddy_plugins:
+          - github.com/caddy-dns/cloudflare
+
+
+- name: Configure Caddy
+  import_playbook: configure_internal_proxy.yml

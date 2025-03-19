@@ -1,0 +1,56 @@
+---
+- name: Configure Caddy
+  hosts: HOME-PROXY-001
+
+  tasks:
+    - name: Load Caddy Config
+      maxhoesel.caddy.caddy_load:
+        content:
+          apps:
+            http:
+              servers:
+                homelab:
+                  listen:
+                    - :443
+                  routes:
+                    - match:
+                      - host:
+                          - '*.home.tinymagellanic.cloud'
+                      handle:
+                      - handler: subroute
+                        routes:
+                          - match:
+                            - host:
+                              - proxmox.home.tinymagellanic.cloud
+                            handle:
+                              - handler: reverse_proxy
+                                upstreams:
+                                  - dial: hypervisor1.home.tinymagellanic.cloud:8006
+                                transport:
+                                  protocol: http
+                                  tls: {}
+                          - handle:
+                            - handler: static_response
+                              abort: true
+                      terminal: true
+            tls:
+              automation:
+                policies:
+                  - subjects:
+                    - '*.home.tinymagellanic.cloud'
+                    issuers:
+                      - module: acme
+                        email: alexander.cieslewicz@gmail.com
+                        challenges:
+                          dns:
+                            provider:
+                              name: cloudflare
+                              api_token: !vault |
+                                $ANSIBLE_VAULT;1.1;AES256
+                                39643966393364323865333734386435616462616538326463663737623136663136386164393336
+                                3762626162376633346431643837333563363131663362360a366465366361363339613737353765
+                                31613635313765393531626339623366303163336263383130376165343161356635323034323661
+                                6439373136313931660a316261356363313331393539396664623562333062633533303962666365
+                                38613031643931323334313238626633373162376562663463306566323463356566376436313035
+                                3639646136663365396238323564396461356263616138373639
+            
