@@ -23,7 +23,6 @@
     - update
     - hifis.toolkit.unattended_upgrades
 
-
   tasks:
     - name: Download cloudflared Linux package
       ansible.builtin.get_url:

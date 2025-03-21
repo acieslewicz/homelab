@@ -7,9 +7,9 @@
 
 - name: Download Caddy
   ansible.builtin.get_url:
-    url:  "https://github.com/caddyserver/caddy/releases/download/{{ caddy_release.json.tag_name }}/\
-      caddy_{{ caddy_release.json.tag_name | regex_replace('v', '') }}_{{ ansible_system | lower }}_\
-      {{ ansible_architecture | regex_replace('x86_64', 'amd64') }}.tar.gz"
+    url: "https://github.com/caddyserver/caddy/releases/download/\
+      {{ caddy_release.json.tag_name }}/caddy_{{ caddy_release.json.tag_name | regex_replace('v', '') }}_\
+      {{ ansible_system | lower }}_{{ ansible_architecture | regex_replace('x86_64', 'amd64') }}.tar.gz"
     dest: /tmp/caddy.tar.gz
     mode: "0644"
 
@@ -25,7 +25,7 @@
     dest: /usr/bin/caddy
     remote_src: true
     mode: "0755"
-    force: no
+    force: false
 
 - name: Get installed Caddy Plugins
   ansible.builtin.command: caddy build-info
@@ -66,7 +66,7 @@
     mode: "0644"
 
 - name: Create Caddy /etc/ directory
-  file:
+  ansible.builtin.file:
     path: /etc/caddy
     state: directory
     mode: "0755"
