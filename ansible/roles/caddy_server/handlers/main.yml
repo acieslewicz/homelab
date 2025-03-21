@@ -3,10 +3,10 @@
   ansible.builtin.service:
     name: caddy
     state: reloaded
-  when: (caddy_config_mode | lower == 'caddyfile')
+  when: (caddy_server_caddy_config_mode | lower == 'caddyfile')
 
 - name: Restart Caddy
   ansible.builtin.service:
     name: caddy
     state: restarted
-  when: (caddy_config_mode | lower == 'json')
+  when: (caddy_server_caddy_config_mode | lower == 'json')
