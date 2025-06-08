@@ -5,19 +5,19 @@ data "local_file" "ssh_public_key" {
 resource "proxmox_virtual_environment_download_file" "latest_debian_12_bookworm_lxc_img" {
   content_type = "vztmpl"
   datastore_id = "local"
-  node_name    = "HOME-HYP-001"
+  node_name    = "proxmox-01"
   url          = "http://download.proxmox.com/images/system/debian-12-standard_12.7-1_amd64.tar.zst"
 }
 
 resource "proxmox_virtual_environment_container" "dns1" {
 
-  node_name    = "HOME-HYP-001"
+  node_name    = "proxmox-01"
   unprivileged = true
 
   tags = ["dns"]
 
   initialization {
-    hostname = "HOME-DNS-001"
+    hostname = "dns-01"
 
     ip_config {
       ipv4 {
@@ -58,13 +58,13 @@ resource "proxmox_virtual_environment_container" "dns1" {
 
 resource "proxmox_virtual_environment_container" "proxy1" {
 
-  node_name    = "HOME-HYP-001"
+  node_name    = "proxmox-01"
   unprivileged = true
 
   tags = ["proxy"]
 
   initialization {
-    hostname = "HOME-PROXY-001"
+    hostname = "proxy-01"
 
     ip_config {
       ipv4 {
@@ -98,15 +98,15 @@ resource "proxmox_virtual_environment_container" "proxy1" {
   }
 }
 
-resource "proxmox_virtual_environment_container" "tunner1" {
+resource "proxmox_virtual_environment_container" "tunnel1" {
 
-  node_name    = "HOME-HYP-001"
+  node_name    = "proxmox-01"
   unprivileged = true
 
   tags = ["tunnel"]
 
   initialization {
-    hostname = "EXT-TUNNEL-001"
+    hostname = "clouflare-tunnel-01"
 
     ip_config {
       ipv4 {
@@ -143,13 +143,13 @@ resource "proxmox_virtual_environment_container" "tunner1" {
 
 resource "proxmox_virtual_environment_container" "proxy2" {
 
-  node_name    = "HOME-HYP-001"
+  node_name    = "proxmox-01"
   unprivileged = true
 
   tags = ["proxy"]
 
   initialization {
-    hostname = "EXT-PROXY-001"
+    hostname = "external-proxy-001"
 
     ip_config {
       ipv4 {
