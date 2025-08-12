@@ -8,5 +8,6 @@
 # OpenTofu
 .terraform
 .bitwarden
+terraform.tfvars
 *.tfstate.backup
 *.tfstate

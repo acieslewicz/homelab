@@ -1,0 +1,66 @@
+name: OpenTofu Automation
+
+on:
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Setup wireguard
+        run: |
+            sudo apt install wireguard
+            echo "${{ secrets.WIREGUARD_CONFIG }}" > wg0.conf
+            sudo chmod 600 wg0.conf
+            sudo wg-quick up ./wg0.conf
+      
+      - name: Checkout repository
+        uses: actions/checkout@v5
+
+      - name: Get secrets from Bitwarden
+        id: bitwarden-secrets
+        uses: bitwarden/sm-action@v2
+        with:
+          access_token: ${{ secrets.BW_ACCESS_TOKEN }}
+          base_url: https://vault.bitwarden.com
+          secrets: |
+            88dea30a-79a4-4dd5-91a9-b33700cbd413 > aws_access_key_id
+            e29adc24-c76d-49c7-91a4-b33700cbb9e6 > aws_secret_access_key
+            48ac96d9-8da8-4dd3-a069-b33700cc38c9 > s3_endpoint
+
+      - name: Create tfvars file
+        working-directory: ./opentofu
+        run: |
+          cat <<EOF > terraform.tfvars
+          s3_endpoint = "${{ steps.bitwarden-secrets.outputs.s3_endpoint }}"
+          bws_access_token = "${{ secrets.BW_ACCESS_TOKEN }}"
+          EOF
+
+      - name: Setup OpenTofu
+        uses: opentofu/setup-opentofu@v1
+
+      - name: Run OpenTofu Init
+        working-directory: ./opentofu
+        env:
+          AWS_ACCESS_KEY_ID: ${{ steps.bitwarden-secrets.outputs.aws_access_key_id }}
+          AWS_SECRET_ACCESS_KEY: ${{ steps.bitwarden-secrets.outputs.aws_secret_access_key }}
+        run: |
+          tofu init -var-file=terraform.tfvars
+
+      - name: Run OpenTofu plan
+        id: plan
+        working-directory: ./opentofu
+        env:
+          AWS_ACCESS_KEY_ID: ${{ steps.bitwarden-secrets.outputs.aws_access_key_id }}
+          AWS_SECRET_ACCESS_KEY: ${{ steps.bitwarden-secrets.outputs.aws_secret_access_key }}
+          BWS_ACCESS_TOKEN: ${{ secrets.BW_ACCESS_TOKEN }}
+        run: tofu plan -out=tfplan
+
+      - name: Apply the plan
+        if: success()
+        working-directory: ./opentofu
+        env:
+          AWS_ACCESS_KEY_ID: ${{ steps.bitwarden-secrets.outputs.aws_access_key_id }}
+          AWS_SECRET_ACCESS_KEY: ${{ steps.bitwarden-secrets.outputs.aws_secret_access_key }}
+          BWS_ACCESS_TOKEN: ${{ secrets.BW_ACCESS_TOKEN }}
+        run: tofu apply tfplan
