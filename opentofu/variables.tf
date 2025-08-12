@@ -1,10 +1,10 @@
-variable "virtual_environment_endpoint" {
+variable "s3_endpoint" {
+  description = "Endpoint for S3 storage"
   type        = string
-  description = "The endpoint for the Proxmox Virtual Environment API"
 }
 
-variable "virtual_environment_token" {
+variable "bws_access_token" {
+  description = "Access Token for BWS"
   type        = string
   sensitive   = true
-  description = "The token for the Proxmox Virtual Environment API"
 }
