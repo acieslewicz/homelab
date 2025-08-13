@@ -18,6 +18,11 @@ resource "proxmox_virtual_environment_vm" "debian_template" {
     dedicated = 2048
   }
 
+  efi_disk {
+    datastore_id = "local-data"
+    type         = "4m"
+  }
+
   network_device {
     bridge = "vmbr0"
   }
