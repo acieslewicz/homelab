@@ -1,0 +1,16 @@
+---
+plugin: community.general.proxmox
+url: "{{ lookup('bitwarden.secrets.lookup', 'f4f9244e-64b3-432b-84d7-b33600a8e3b5') }}"
+user: ansible@pve
+token_id: auditor
+token_secret: "{{ lookup('bitwarden.secrets.lookup', '87a4de60-8061-4614-9d7d-b33800e6790b') }}" 
+
+want_facts: true
+exclude_nodes: true
+keyed_groups:
+  - key: proxmox_tags_parsed
+    separator: "_"
+    prefix: proxmox
+
+compose:
+  ansible_host: proxmox_ipconfig0.ip | ansible.utils.ipaddr('address')
