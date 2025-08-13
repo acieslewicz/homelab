@@ -29,7 +29,7 @@ resource "proxmox_virtual_environment_container" "dns1" {
   }
 
   operating_system {
-    template_file_id = proxmox_virtual_environment_download_file.latest_debian.id
+    template_file_id = proxmox_virtual_environment_download_file.debian_bookworm_lxc.id
     type = "debian"
   }
 
