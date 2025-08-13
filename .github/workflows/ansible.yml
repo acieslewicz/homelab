@@ -31,7 +31,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5
       
-      - name: Install additional ansible dependencies
+      - name: Install ansible & dependencies
         run: pip install ansible requests bitwarden-sdk
       
       - name: Configure ansible
