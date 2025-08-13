@@ -21,4 +21,12 @@ provider "bitwarden" {
 provider "proxmox" {
   endpoint  = data.bitwarden_secret.proxmox_endpoint.value
   api_token = data.bitwarden_secret.proxmox_access_token.value
+
+
+  ssh {
+    // TODO: Move away from root
+    username = "root"
+
+    agent = false
+  }
 }
