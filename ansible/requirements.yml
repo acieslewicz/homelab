@@ -1,8 +1,0 @@
----
-roles:
-  - name: systemli.bind9
-
-collections:
-  - name: community.general
-  - name: maxhoesel.caddy
-  - name: hifis.toolkit
