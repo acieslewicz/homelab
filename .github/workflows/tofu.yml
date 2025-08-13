@@ -44,7 +44,7 @@ jobs:
         env:
           AWS_ACCESS_KEY_ID: ${{ steps.bitwarden-secrets.outputs.aws_access_key_id }}
           AWS_SECRET_ACCESS_KEY: ${{ steps.bitwarden-secrets.outputs.aws_secret_access_key }}
-          PROXMOX_VE_SSH_PRIVATE_KEY: ${{ secrets. PROXMOX_VE_SSH_PRIVATE_KEY }}
+          PROXMOX_VE_SSH_PRIVATE_KEY: ${{ secrets.HOMELAB_SSH_PRIVATE_KEY }}
         run: |
           tofu init -var-file=terraform.tfvars
 
@@ -54,7 +54,7 @@ jobs:
         env:
           AWS_ACCESS_KEY_ID: ${{ steps.bitwarden-secrets.outputs.aws_access_key_id }}
           AWS_SECRET_ACCESS_KEY: ${{ steps.bitwarden-secrets.outputs.aws_secret_access_key }}
-          PROXMOX_VE_SSH_PRIVATE_KEY: ${{ secrets. PROXMOX_VE_SSH_PRIVATE_KEY }}
+          PROXMOX_VE_SSH_PRIVATE_KEY: ${{ secrets.HOMELAB_SSH_PRIVATE_KEY }}
           BWS_ACCESS_TOKEN: ${{ secrets.BW_ACCESS_TOKEN }}
         run: tofu plan -out=tfplan
 
@@ -64,6 +64,6 @@ jobs:
         env:
           AWS_ACCESS_KEY_ID: ${{ steps.bitwarden-secrets.outputs.aws_access_key_id }}
           AWS_SECRET_ACCESS_KEY: ${{ steps.bitwarden-secrets.outputs.aws_secret_access_key }}
-          PROXMOX_VE_SSH_PRIVATE_KEY: ${{ secrets. PROXMOX_VE_SSH_PRIVATE_KEY }}
+          PROXMOX_VE_SSH_PRIVATE_KEY: ${{ secrets.HOMELAB_SSH_PRIVATE_KEY }}
           BWS_ACCESS_TOKEN: ${{ secrets.BW_ACCESS_TOKEN }}
         run: tofu apply tfplan
