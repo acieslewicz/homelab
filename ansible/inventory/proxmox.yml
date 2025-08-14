@@ -1,5 +1,5 @@
 ---
-plugin: community.general.proxmox
+plugin: community.proxmox.proxmox
 url: "{{ lookup('bitwarden.secrets.lookup', 'f4f9244e-64b3-432b-84d7-b33600a8e3b5') }}"
 user: ansible@pve
 token_id: auditor
