@@ -9,6 +9,7 @@ on:
         options:
           - pong.yml
           - install_docker.yml
+          - deploy_komodo.yml
 
 jobs:
   run-playbook:
