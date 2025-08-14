@@ -8,6 +8,7 @@ on:
         type: choice
         options:
           - pong.yml
+          - install_docker.yml
 
 jobs:
   run-playbook:
@@ -36,7 +37,7 @@ jobs:
       
       - name: Configure ansible
         working-directory: ./ansible
-        run: ansible-galaxy collection install -r requirements.yml
+        run: ansible-galaxy install -r requirements.yml
 
       - name: Run playbook
         working-directory: ./ansible

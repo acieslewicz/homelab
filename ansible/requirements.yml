@@ -3,3 +3,9 @@ collections:
   - name: community.general
   - name: community.proxmox
   - name: bitwarden.secrets
+
+roles:
+  - name: geerlingguy.docker
+    # This is a workaround until trixie support is upstreamed
+    src: https://github.com/acieslewicz/ansible-role-docker.git
+    version: trixie-support
