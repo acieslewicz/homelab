@@ -1,0 +1,61 @@
+---
+- name: Deploy Komodo Periphery using Docker Compose
+  hosts: proxmox_periphery
+  become: yes
+
+  vars:
+    komodo_dir: /opt/komodo
+    periphery_compose_file: "{{ komodo_dir }}/periphery.compose.yaml"
+    komodo_passkey: "{{ lookup('bitwarden.secrets.lookup', komodo_secrets.passkey) }}"
+    periphery_root_directory: "/etc/komodo"
+
+  tasks:
+    - name: Ensure Docker is running
+      ansible.builtin.service:
+        name: docker
+        state: started
+        enabled: yes
+    
+    - name: Create Komodo directory
+      ansible.builtin.file:
+        path: "{{ komodo_dir }}"
+        state: directory
+        mode: '0755'
+        owner: "{{ ansible_user }}"
+        group: "{{ ansible_user }}"
+    
+    - name: Create Periphery root directory
+      ansible.builtin.file:
+        path: "{{   periphery_root_directory }}"
+        state: directory
+        mode: '0755'
+        owner: root
+        group: root
+
+    - name: Create compose file from template
+      ansible.builtin.template:
+        src: periphery.compose.yaml.j2
+        dest: "{{ periphery_compose_file }}"
+        mode: '0600'
+        owner: "{{ ansible_user }}"
+        group: "{{ ansible_user }}"
+
+    - name: Deploy Periphery with Docker Compose
+      community.docker.docker_compose_v2:
+        project_src: "{{ komodo_dir }}"
+        project_name: periphery
+        files:
+          - periphery.compose.yaml
+        state: present
+        recreate: auto
+    
+    - name: Get container status
+      community.docker.docker_container_info:
+        name: periphery
+      register: container_status
+
+    - name: Print information about container
+      ansible.builtin.debug:
+        var: container_status.container
+      when: container_status.exists
+    

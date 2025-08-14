@@ -10,6 +10,7 @@ on:
           - pong.yml
           - install_docker.yml
           - deploy_komodo.yml
+          - deploy_periphery.yml
 
 jobs:
   run-playbook:
