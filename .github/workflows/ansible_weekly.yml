@@ -1,0 +1,46 @@
+name: Weekly Ansible Playbooks
+
+on:
+  schedule:
+    - cron: "0 4 * * 6"
+  workflow_dispatch:
+
+jobs:
+  run-playbooks:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Setup wireguard
+        run: |
+            sudo apt install wireguard
+            echo "${{ secrets.WIREGUARD_CONFIG }}" > wg0.conf
+            sudo chmod 600 wg0.conf
+            sudo wg-quick up ./wg0.conf
+
+      - name: Checkout repository
+        uses: actions/checkout@v5
+
+      - name: Setup SSH key
+        uses: webfactory/ssh-agent@v0.9.1
+        with:
+          ssh-private-key: ${{ secrets.HOMELAB_SSH_PRIVATE_KEY }}
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+      
+      - name: Install ansible & dependencies
+        run: pip install ansible requests bitwarden-sdk
+      
+      - name: Configure ansible
+        working-directory: ./ansible
+        run: ansible-galaxy install -r requirements.yml
+
+      - name: Run playbooks
+        working-directory: ./ansible
+        env:
+          BWS_ACCESS_TOKEN: ${{ secrets.BW_ACCESS_TOKEN }}
+          ANSIBLE_REMOTE_USER: ${{ secrets.ANSIBLE_REMOTE_USER }}
+        run: |
+          for playbook in playbooks/weekly/*.yml; do
+            echo "Running $playbook..."
+            ansible-playbook $playbook || echo "Playbook $playbook failed, continuing..."
+          done
