@@ -3,5 +3,17 @@ api:
 entryPoints:
   web:
     address: ":80"
+  websecure:
+    address: ":443"
 providers:
   docker: {}
+
+certificatesResolvers:
+  letsencrypt:
+    acme:
+      email: alexander.cieslewicz@gmail.com
+      storage: /letsencrypt/acme.json
+      caServer: "https://acme-staging-v02.api.letsencrypt.org/directory"
+      dnsChallenge:
+        provider: cloudflare
+        delayBeforeCheck: 10
