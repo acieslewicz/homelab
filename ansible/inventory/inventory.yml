@@ -1,0 +1,6 @@
+all:
+  children:
+    ml_servers:
+      hosts:
+        EXT-ML-001:
+          ansible_host: 192.168.110.20
