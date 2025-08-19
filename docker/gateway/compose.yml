@@ -1,4 +1,19 @@
+name: "gateway"
+x-lockdown: &lockdown
+  read_only: true
+  security_opt:
+    - "no-new-privileges=true"
 services:
+  socket-proxy:
+    image: "11notes/socket-proxy:2.1.4"
+    <<: *lockdown
+    user: "0:989" 
+    environment:
+      TZ: "America/Denver"
+    volumes:
+      - "/run/docker.sock:/run/docker.sock:ro" 
+      - "socket-proxy.run:/run/proxy"
+    restart: "always"
   traefik:
     image: traefik:v3.5
     ports:
@@ -25,3 +40,6 @@ services:
       - "traefik.http.routers.traefik-secure.tls.domains[0].main=home.tinymagellanic.cloud"
       - "traefik.http.routers.traefik-secure.tls.domains[0].sans=*.home.tinymagellanic.cloud"
       - "traefik.http.routers.traefik-secure.service=api@internal"
+
+volumes:
+  socket-proxy.run:
