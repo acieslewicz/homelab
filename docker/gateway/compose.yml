@@ -15,17 +15,25 @@ services:
       - "socket-proxy.run:/run/proxy"
     restart: "always"
   traefik:
+    depends_on:
+      socket-proxy:
+        condition: "service_healthy"
+        restart: true
     image: traefik:v3.5
+    <<: *lockdown
     ports:
-      - "80:80"
-      - "443:443"
-      - "8080:8080"
+      - "80:80/tcp"
+      - "443:443/tcp"
+    environment:
+      TZ: "America/Denver"
     env_file: .env
     volumes:
-      - /etc/localtime:/etc/localtime:ro
-      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - "socket-proxy.run:/var/run"
       - ./traefik.yml:/etc/traefik/traefik.yml:ro
-      - ./letsencrypt:/letsencrypt
+      - "var:/traefik/var"
+    networks:
+      backend:
+      frontend:
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.traefik.entrypoints=http"
@@ -42,4 +50,10 @@ services:
       - "traefik.http.routers.traefik-secure.service=api@internal"
 
 volumes:
+  var:
   socket-proxy.run:
+
+networks:
+  frontend:
+  backend:
+    internal: true

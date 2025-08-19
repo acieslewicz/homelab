@@ -19,7 +19,7 @@ certificatesResolvers:
   letsencrypt:
     acme:
       email: alexander.cieslewicz@gmail.com
-      storage: /letsencrypt/acme.json
+      storage: /traefik/var/cloudflare.json
       caServer: https://acme-staging-v02.api.letsencrypt.org/directory
       dnsChallenge:
         provider: cloudflare
