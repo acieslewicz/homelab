@@ -16,7 +16,7 @@ http:
     test:
       loadBalancer:
         servers:
-          - url: "http://192.168.110.20"
+          - url: "http://192.168.110.20:5001"
         passHostHeader: true
   middlewares:
     default-headers:
