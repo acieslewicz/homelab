@@ -20,7 +20,6 @@ services:
         condition: "service_healthy"
         restart: true
     image: traefik:v3.5
-    container_name: traefik
     <<: *lockdown
     ports:
       - "80:80/tcp"
