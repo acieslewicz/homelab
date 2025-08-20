@@ -3,11 +3,16 @@ http:
     test:
       entryPoints:
         - "https"
-      rule: "Host(`test.home.tinymagellanic.cloud`)"
+      rule: "Host(`test.home.tinymagellanic.cloud`) || Host(`test.tinymagellanic.cloud`)"
       middlewares:
         - default-headers
       tls:
         certResolver: letsencrypt
+        domains:
+          main: "tinymagellanic.cloud"
+          sans: "*.tinymagellanic.cloud"
+          main: "home.tinymagellanic.cloud"
+          sans: "*.home.tinymagellanic.cloud"
       service: test 
   services:
     test:
