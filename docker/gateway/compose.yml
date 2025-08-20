@@ -32,7 +32,7 @@ services:
     volumes:
       - "socket-proxy.run:/var/run"
       - ./traefik.yml:/etc/traefik/traefik.yml:ro
-      - ./config.yml:config.yml:ro
+      - ./config.yml:/etc/traefik/config.yml:ro
       - "var:/traefik/var"
     networks:
       backend:
