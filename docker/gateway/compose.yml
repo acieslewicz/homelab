@@ -20,6 +20,7 @@ services:
         condition: "service_healthy"
         restart: true
     image: traefik:v3.5
+    container_name: reverse-proxy
     <<: *lockdown
     ports:
       - "80:80/tcp"
@@ -59,6 +60,9 @@ services:
     <<: *lockdown
     command: tunnel --no-autoupdate run --token ${CF_TUNNEL_TOKEN}
     restart: unless-stopped
+    networks:
+      backend:
+      frontend:
 
 volumes:
   var:
