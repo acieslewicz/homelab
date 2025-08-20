@@ -2,8 +2,12 @@ http:
   routers:
     test:
       entryPoints:
-        - "http"
+        - "https"
       rule: "Host(`test.home.tinymagellanic.cloud`)"
+      middlewares:
+        - default-headers
+      tls:
+        certResolver: letsencrypt
       service: test 
   services:
     test:
