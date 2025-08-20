@@ -2,12 +2,8 @@ http:
   routers:
     test:
       entryPoints:
-        - "https"
+        - "http"
       rule: "Host(`test.home.tinymagellanic.cloud`)"
-      middlewares:
-        - default-headers
-        - https-redirectscheme
-      tls: {}
       service: test 
   services:
     test:
@@ -16,10 +12,6 @@ http:
           - url: "http://192.168.110.20"
         passHostHeader: true
   middlewares:
-    https-redirectscheme:
-      redirectScheme:
-        scheme: https
-        permanent: true
     default-headers:
       headers:
         frameDeny: true
@@ -30,8 +22,6 @@ http:
         stsPreload: true
         stsSeconds: 15552000
         customFrameOptionsValue: SAMEORIGIN
-        customRequestHeaders:
-          X-Forwarded-Proto: https
 
     default-whitelist:
       ipAllowList:
