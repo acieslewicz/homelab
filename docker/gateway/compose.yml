@@ -58,13 +58,11 @@ services:
       TZ: "America/Denver"
       CF_TUNNEL_TOKEN: ${CF_TUNNEL_TOKEN}
     <<: *lockdown
-    command: tunnel --no-autoupdate --loglevel debug run --token ${CF_TUNNEL_TOKEN}
+    command: tunnel --no-autoupdate run --token ${CF_TUNNEL_TOKEN}
     restart: unless-stopped
     networks:
       - frontend
       - backend
-    dns_search:
-      - gateway_frontend
 
 volumes:
   var:
