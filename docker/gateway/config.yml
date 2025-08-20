@@ -8,7 +8,7 @@ http:
         - default-headers
         - https-redirectscheme
       tls: {}
-      service: proxmox
+      service: test 
   services:
     test:
       loadBalancer:
