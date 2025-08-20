@@ -13,7 +13,6 @@ resource "proxmox_virtual_environment_vm" "gateway" {
 
   initialization {
     dns {
-      domain  = "home.tinymagellanic.cloud"
       servers = ["9.9.9.9", "149.112.112.112"]
     }
     ip_config {
