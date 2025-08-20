@@ -1,6 +1,6 @@
 ---
 - name: Install Docker
-  hosts: proxmox_docker
+  hosts: proxmox_docker, ml_servers
   become: yes
   gather_facts: yes
 
