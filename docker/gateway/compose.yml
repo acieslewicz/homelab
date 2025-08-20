@@ -63,6 +63,8 @@ services:
     networks:
       - frontend
       - backend
+    dns_search:
+      - gateway_frontend
 
 volumes:
   var:
