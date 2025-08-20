@@ -9,10 +9,10 @@ http:
       tls:
         certResolver: letsencrypt
         domains:
-          main: "tinymagellanic.cloud"
-          sans: "*.tinymagellanic.cloud"
-          main: "home.tinymagellanic.cloud"
-          sans: "*.home.tinymagellanic.cloud"
+          - main: "tinymagellanic.cloud"
+            sans: ["*.tinymagellanic.cloud"]
+          - main: "home.tinymagellanic.cloud"
+            sans: ["*.home.tinymagellanic.cloud"]
       service: test 
   services:
     test:
