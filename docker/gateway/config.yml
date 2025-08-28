@@ -24,6 +24,18 @@ http:
           - main: "tinymagellanic.cloud"
             sans: ["*.tinymagellanic.cloud"]
       service: test 
+    vllm:
+      entryPoints:
+        - "https"
+      rule: "Host(`vllm.home.tinymagellanic.cloud`)"
+      middlewares:
+        - default-headers
+      tls:
+        certResolver: letsencrypt
+        domains:
+          - main: "tinymagellanic.cloud"
+            sans: ["*.tinymagellanic.cloud"]
+      service: vllm
   services:
     komodo:
       loadBalancer:
@@ -34,6 +46,11 @@ http:
       loadBalancer:
         servers:
           - url: "http://192.168.110.20:5001"
+        passHostHeader: true
+    vllm:
+      loadBalancer:
+        servers:
+          - url: "http://192.168.100.20:8000"
         passHostHeader: true
   middlewares:
     default-headers:
