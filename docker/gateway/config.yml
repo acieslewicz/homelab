@@ -12,10 +12,10 @@ http:
           - main: "home.tinymagellanic.cloud"
             sans: ["*.tinymagellanic.cloud"]
       service: komodo
-    test:
+    docling:
       entryPoints:
         - "https"
-      rule: "Host(`test.home.tinymagellanic.cloud`) || Host(`test.tinymagellanic.cloud`)"
+      rule: "Host(`docling.home.tinymagellanic.cloud`) || Host(`docling.tinymagellanic.cloud`)"
       middlewares:
         - default-headers
       tls:
@@ -30,7 +30,7 @@ http:
         servers:
           - url: "http://192.168.100.60:9120"
         passHostHeader: true
-    test:
+    docling:
       loadBalancer:
         servers:
           - url: "http://192.168.110.20:5001"
