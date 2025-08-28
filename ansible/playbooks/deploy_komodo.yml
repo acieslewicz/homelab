@@ -109,6 +109,7 @@
           - mongo.compose.yaml
         env_files:
           - compose.env
+        pull: always
         state: present
         recreate: auto
 
