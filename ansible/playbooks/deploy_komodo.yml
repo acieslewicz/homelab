@@ -11,6 +11,8 @@
     
     komodo_config:
       compose_komodo_image_tag: "latest"
+
+      backups_path: "/etc/komodo/backups"
       
       komodo_db_username: "admin"
       komodo_db_password: "{{ lookup('bitwarden.secrets.lookup', komodo_secrets.database_password) }}"
