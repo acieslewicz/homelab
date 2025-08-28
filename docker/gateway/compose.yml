@@ -7,7 +7,7 @@ services:
   socket-proxy:
     image: "11notes/socket-proxy:2.1.4"
     <<: *lockdown
-    user: "0:989" 
+    user: "0:${DOCKER_GID:-1000}" 
     environment:
       TZ: "America/Denver"
     volumes:
