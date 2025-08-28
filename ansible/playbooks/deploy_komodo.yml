@@ -111,7 +111,7 @@
           - compose.env
         pull: always
         state: present
-        recreate: auto
+        recreate: always
 
     - name: Get container status
       community.docker.docker_container_info:
