@@ -23,7 +23,7 @@ http:
         domains:
           - main: "tinymagellanic.cloud"
             sans: ["*.tinymagellanic.cloud"]
-      service: test 
+      service: docling 
     vllm:
       entryPoints:
         - "https"
