@@ -1,29 +1,31 @@
 api:
-  dashboard: true
-  insecure: false
+    dashboard: true
+    insecure: false
+log:
+    level: INFO
 entryPoints:
-  http:
-    address: ":80"
     http:
-      redirections:
-        entryPoint:
-          to: https
-          scheme: https
-  https:
-    address: ":443"
+        address: ":80"
+        http:
+            redirections:
+                entryPoint:
+                    to: https
+                    scheme: https
+    https:
+        address: ":443"
 providers:
-  docker:
-    endpoint: "unix:///var/run/docker.sock"
-    exposedByDefault: false
-  file:
-    filename: /etc/traefik/config.yml
+    docker:
+        endpoint: "unix:///var/run/docker.sock"
+        exposedByDefault: false
+    file:
+        filename: /etc/traefik/config.yml
 certificatesResolvers:
-  letsencrypt:
-    acme:
-      email: alexander.cieslewicz@gmail.com
-      storage: /traefik/var/cloudflare.json
-      # caServer: https://acme-staging-v02.api.letsencrypt.org/directory
-      caServer: https://acme-v02.api.letsencrypt.org/directory
-      dnsChallenge:
-        provider: cloudflare
-        delayBeforeCheck: 10
+    letsencrypt:
+        acme:
+            email: alexander.cieslewicz@gmail.com
+            storage: /traefik/var/cloudflare.json
+            # caServer: https://acme-staging-v02.api.letsencrypt.org/directory
+            caServer: https://acme-v02.api.letsencrypt.org/directory
+            dnsChallenge:
+                provider: cloudflare
+                delayBeforeCheck: "10"
