@@ -1,74 +1,74 @@
 name: "gateway"
 x-lockdown: &lockdown
-  read_only: true
-  security_opt:
-    - "no-new-privileges=true"
+    read_only: true
+    security_opt:
+        - "no-new-privileges=true"
 services:
-  socket-proxy:
-    image: "11notes/socket-proxy:2.1.4"
-    <<: *lockdown
-    user: "0:${DOCKER_GID:-1000}" 
-    environment:
-      TZ: "America/Denver"
-    volumes:
-      - "/run/docker.sock:/run/docker.sock:ro" 
-      - "socket-proxy.run:/run/proxy"
-    restart: "always"
-  traefik:
-    depends_on:
-      socket-proxy:
-        condition: "service_healthy"
-        restart: true
-    image: traefik:v3.5
-    <<: *lockdown
-    ports:
-      - "80:80/tcp"
-      - "443:443/tcp"
-    environment:
-      TZ: "America/Denver"
-      TRAEFIK_DASHBOARD_CREDENTIALS: ${TRAEFIK_DASHBOARD_CREDENTIALS}
-    env_file: .env
-    volumes:
-      - "socket-proxy.run:/var/run"
-      - ./traefik.yml:/etc/traefik/traefik.yml:ro
-      - ./config.yml:/etc/traefik/config.yml:ro
-      - "var:/traefik/var"
-    networks:
-      backend:
-      frontend:
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.traefik.entrypoints=http"
-      - "traefik.http.routers.traefik.rule=Host(`traefik.home.tinymagellanic.cloud`)"
-      - "traefik.http.middlewares.traefik-auth.basicauth.users=${TRAEFIK_DASHBOARD_CREDENTIALS}"
-      - "traefik.http.middlewares.traefik-https-redirect.redirectscheme.scheme=https"
-      - "traefik.http.middlewares.sslheader.headers.customrequestheaders.X-Forwarded-Proto=https"
-      - "traefik.http.routers.traefik.middlewares=traefik-https-redirect"
-      - "traefik.http.routers.traefik-secure.entrypoints=https"
-      - "traefik.http.routers.traefik-secure.rule=Host(`traefik.home.tinymagellanic.cloud`)"
-      - "traefik.http.routers.traefik-secure.middlewares=traefik-auth"
-      - "traefik.http.routers.traefik-secure.tls=true"
-      - "traefik.http.routers.traefik-secure.tls.certresolver=letsencrypt"
-      - "traefik.http.routers.traefik-secure.tls.domains[0].main=home.tinymagellanic.cloud"
-      - "traefik.http.routers.traefik-secure.tls.domains[0].sans=*.home.tinymagellanic.cloud"
-      - "traefik.http.routers.traefik-secure.service=api@internal"
-  cloudflare-tunnel:
-    image: cloudflare/cloudflared:2025.8.1
-    environment:
-      TZ: "America/Denver"
-      CF_TUNNEL_TOKEN: ${CF_TUNNEL_TOKEN}
-    <<: *lockdown
-    command: tunnel --no-autoupdate run --token ${CF_TUNNEL_TOKEN}
-    restart: unless-stopped
-    networks:
-      - frontend
-      - backend
+    socket-proxy:
+        image: "11notes/socket-proxy:2.1.6"
+        <<: *lockdown
+        user: "0:${DOCKER_GID:-1000}"
+        environment:
+            TZ: "America/Denver"
+        volumes:
+            - "/run/docker.sock:/run/docker.sock:ro"
+            - "socket-proxy.run:/run/proxy"
+        restart: "always"
+    traefik:
+        depends_on:
+            socket-proxy:
+                condition: "service_healthy"
+                restart: true
+        image: traefik:v3.6
+        <<: *lockdown
+        ports:
+            - "80:80/tcp"
+            - "443:443/tcp"
+        environment:
+            TZ: "America/Denver"
+            TRAEFIK_DASHBOARD_CREDENTIALS: ${TRAEFIK_DASHBOARD_CREDENTIALS}
+        env_file: .env
+        volumes:
+            - "socket-proxy.run:/var/run"
+            - ./traefik.yml:/etc/traefik/traefik.yml:ro
+            - ./config.yml:/etc/traefik/config.yml:ro
+            - "var:/traefik/var"
+        networks:
+            backend:
+            frontend:
+        labels:
+            - "traefik.enable=true"
+            - "traefik.http.routers.traefik.entrypoints=http"
+            - "traefik.http.routers.traefik.rule=Host(`traefik.home.tinymagellanic.cloud`)"
+            - "traefik.http.middlewares.traefik-auth.basicauth.users=${TRAEFIK_DASHBOARD_CREDENTIALS}"
+            - "traefik.http.middlewares.traefik-https-redirect.redirectscheme.scheme=https"
+            - "traefik.http.middlewares.sslheader.headers.customrequestheaders.X-Forwarded-Proto=https"
+            - "traefik.http.routers.traefik.middlewares=traefik-https-redirect"
+            - "traefik.http.routers.traefik-secure.entrypoints=https"
+            - "traefik.http.routers.traefik-secure.rule=Host(`traefik.home.tinymagellanic.cloud`)"
+            - "traefik.http.routers.traefik-secure.middlewares=traefik-auth"
+            - "traefik.http.routers.traefik-secure.tls=true"
+            - "traefik.http.routers.traefik-secure.tls.certresolver=letsencrypt"
+            - "traefik.http.routers.traefik-secure.tls.domains[0].main=home.tinymagellanic.cloud"
+            - "traefik.http.routers.traefik-secure.tls.domains[0].sans=*.home.tinymagellanic.cloud"
+            - "traefik.http.routers.traefik-secure.service=api@internal"
+    cloudflare-tunnel:
+        image: cloudflare/cloudflared:2025.11.1
+        environment:
+            TZ: "America/Denver"
+            CF_TUNNEL_TOKEN: ${CF_TUNNEL_TOKEN}
+        <<: *lockdown
+        command: tunnel --no-autoupdate run --token ${CF_TUNNEL_TOKEN}
+        restart: unless-stopped
+        networks:
+            - frontend
+            - backend
 
 volumes:
-  var:
-  socket-proxy.run:
+    var:
+    socket-proxy.run:
 
 networks:
-  frontend:
-  backend:
-    internal: true
+    frontend:
+    backend:
+        internal: true
