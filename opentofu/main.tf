@@ -2,7 +2,7 @@ terraform {
   required_version = ">= 1.0.0"
 
   backend "s3" {
-    bucket                      = "homelab-configuration"
+    bucket                      = "homelab"
     key                         = "tf.tfstate"
     region                      = "us-west-or"
     skip_region_validation      = true
