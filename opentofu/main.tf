@@ -4,7 +4,7 @@ terraform {
   backend "s3" {
     bucket                      = "homelab-configuration"
     key                         = "tf.tfstate"
-    region                      = "us-east-va"
+    region                      = "us-west-or"
     skip_region_validation      = true
     skip_credentials_validation = true
     skip_requesting_account_id  = true
