@@ -8,6 +8,7 @@
       - role: komodo
         vars:
             version: latest
+            local_auth: true
             db_password: "{{ lookup('bitwarden.secrets.lookup', komodo_secrets.database_password) }}"
             komodo_passkey: "{{ lookup('bitwarden.secrets.lookup', komodo_secrets.passkey) }}"
             first_server: "https://periphery:8120"
