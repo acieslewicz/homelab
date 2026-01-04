@@ -1,2 +1,4 @@
 ---
 komodo_dir: /opt/komodo
+env_file: komodo.compose.env
+compose_file: komodo.compose.yml

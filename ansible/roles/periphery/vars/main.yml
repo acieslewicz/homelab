@@ -1,2 +1,3 @@
 ---
 komodo_dir: /opt/komodo
+compose_file: periphery.compose.yml
