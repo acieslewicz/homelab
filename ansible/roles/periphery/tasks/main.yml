@@ -15,7 +15,7 @@
 
 - name: Create Periphery root directory
   ansible.builtin.file:
-      path: "{{   periphery_root_directory }}"
+      path: "{{ root_directory }}"
       state: directory
       mode: "0755"
       owner: root
