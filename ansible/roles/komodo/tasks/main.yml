@@ -14,7 +14,7 @@
 
 - name: Generate compose environment file from template
   template:
-      src: komodo_compose.env.j2
+      src: komodo.compose.env.j2
       dest: "{{ komodo_dir }}/{{ env_file }}"
       mode: "0600"
       owner: "{{ ansible_user }}"
