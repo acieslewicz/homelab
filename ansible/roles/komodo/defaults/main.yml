@@ -15,7 +15,7 @@ first_server: ""
 disable_confirm_dialog: false
 
 monitoring_interval: "15-sec"
-resouce_poll_interval: "1-hr"
+resource_poll_interval: "1-hr"
 
 webhook_secret: ""
 jwt_secret: ""
