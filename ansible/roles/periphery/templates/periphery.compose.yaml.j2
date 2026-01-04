@@ -1,0 +1,19 @@
+services:
+  periphery:
+    image: ghcr.io/moghtech/komodo-periphery:{{ version }}
+    labels:
+        komodo.skip:
+    restart: {{ restart }}
+    environment:
+        PERIPHERY_ROOT_DIRECTORY: {{ root_directory }}
+        PERIPHERY_PASSKEYS: {{ komodo_passkey }}
+        PERIPHERY_SSL_ENABLED: {{ ssl_enabled | lower }}
+        PERIPHERY_DISABLE_TERMINALS: false
+        PERIPHERY_INCLUDE_DISK_MOUNTS: /etc/hostname
+        PERIPHERY_ALLOWED_IPS: {{ allowed_ips | join(',') }}
+    volumes:
+        - /var/run/docker.sock:/var/run/docker.sock
+        - /proc:/proc
+        - {{ root_directory }}:{{ root_directory }}
+    ports:
+        - {{ periphery_port }}:8120

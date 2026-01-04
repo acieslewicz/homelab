@@ -1,0 +1,60 @@
+- name: Ensure Docker is running
+  service:
+      name: docker
+      state: started
+      enabled: yes
+
+- name: Create Komodo directory
+  file:
+      path: "{{ komodo_dir }}"
+      state: directory
+      mode: "0755"
+      owner: "{{ ansible_user }}"
+      group: "{{ ansible_user }}"
+
+- name: Download mongo.compose.yaml
+  get_url:
+      url: "https://raw.githubusercontent.com/moghtech/komodo/main/compose/mongo.compose.yaml"
+      dest: "{{ komodo_compose_file }}"
+      mode: "0644"
+      owner: "{{ ansible_user }}"
+      group: "{{ ansible_user }}"
+      force: yes
+
+- name: Generate compose.env file from template
+  template:
+      src: komodo_compose.env.j2
+      dest: "{{ komodo_env_file }}"
+      mode: "0600"
+      owner: "{{ ansible_user }}"
+      group: "{{ ansible_user }}"
+
+- name: Create Periphery root directory
+  file:
+      path: "{{ komodo_config.periphery_root_directory }}"
+      state: directory
+      mode: "0755"
+      owner: root
+      group: root
+
+- name: Deploy Komodo with Docker Compose
+  community.docker.docker_compose_v2:
+      project_src: "{{ komodo_dir }}"
+      project_name: komodo
+      files:
+          - mongo.compose.yaml
+      env_files:
+          - compose.env
+      pull: always
+      state: present
+      recreate: always
+
+- name: Get container status
+  community.docker.docker_container_info:
+      name: komodo
+  register: container_status
+
+- name: Print information about container
+  debug:
+      var: container_status.container
+  when: container_status.exists

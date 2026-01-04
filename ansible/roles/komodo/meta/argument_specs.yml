@@ -1,0 +1,142 @@
+argument_specs:
+    main:
+        short_description: "Installs and configured Komodo."
+        options:
+            version:
+                type: str
+                default: latest
+                description: "Version of the docker image to use."
+            backups_path:
+                type: str
+                default: /var/komodo/backups
+                description: "Path to Komodo backups."
+            db_username:
+                type: str
+                default: admin
+                description: "Username for the database."
+            db_password:
+                type: str
+                required: true
+                description: "Password for the database."
+            timezone:
+                type: str
+                required: true
+                description: "Komodo timezone configuration."
+            komodo_passkey:
+                type: str
+                required: true
+                description: "Secure passkey to authenticate between Core / Periphery."
+            title:
+                type: str
+                default: Komodo
+                description: "This is the document title on the web page."
+            host:
+                type: str
+                required: true
+                description: "This should be the url used to access Komodo in browser, potentially behind DNS."
+            first_server:
+                type: str
+                default: ""
+                description: "Ensure a server with this address exists on Core"
+            disable_confirm_dialog:
+                type: bool
+                default: false
+                description: "Disabled the confirm dialogs on all actions. All buttons will now be double-click."
+            monitoring_interval:
+                type: str
+                default: "15-sec"
+                description: "Controls the rate at which servers are polled for health, system stats, and container status."
+            resource_poll_interval:
+                type: str
+                default: "1-hr"
+                description: "Interval at which to poll Resources for any updates / automated actions."
+            webhook_secret:
+                type: str
+                default: ""
+                description: "This token must be given to a git provider during repo webhook config."
+            jwt_secret:
+                type: str
+                default: ""
+                description: "Optionally provide a specific jwt secret."
+            jwt_ttl:
+                type: str
+                default: "1-day"
+                description: "Specify how long a user can stay logged in before they have to log in again."
+            local_auth:
+                type: bool
+                default: false
+                description: "Allow user login with a username / password."
+            disable_user_registration:
+                type: bool
+                default: false
+                description: "Normally new users will be registered, but not enabled until an Admin enables them."
+            enable_new_users:
+                type: bool
+                default: false
+                description: "New users will be automatically enabled when they sign up."
+            disable_non_admin_create:
+                type: bool
+                default: false
+                description: "Normally all enabled users can create resources."
+            transparent_mode:
+                type: bool
+                default: false
+                description: "Allows all users to ahve Read level access to all resources."
+            logging_pretty:
+                type: bool
+                default: false
+                description: "Specify whether logging is more human readable."
+            pretty_startup_config:
+                type: bool
+                default: false
+                description: "Specify whether startup config log is more human reasable (multi-line)."
+            oidc_enabled:
+                type: bool
+                default: false
+                description: "Enable logins with configured OIDC provider."
+            oidc_provider:
+                type: str
+                description: "Give the provider address."
+            oidc_redirect_host:
+                type: str
+                description: "Configure the OIDC user redirect host."
+            oidc_client_id:
+                type: str
+                description: "Set the OIDC Client ID."
+            oidc_client_secret:
+                type: str
+                description: "Set the OIDC Client Secret."
+            oidc_use_full_email:
+                type: str
+                description: "If true, use the full email for usernames."
+            oidc_additional_audiences:
+                type: list
+                description: "Some providers attach other audiences in addtion to the client_id."
+            google_oauth_enabled:
+                type: bool
+                default: false
+                description: "Enable google oauth."
+            google_oauth_id:
+                type: str
+                description: "Required if google_oauth is enabled."
+            google_oauth_secret:
+                type: str
+                description: "Required if google_oauth is enabled."
+            github_oauth_enabled:
+                type: bool
+                default: false
+                description: "Enable github oauth."
+            github_oauth_id:
+                type: str
+                description: "Required if github_oauth is enabled."
+            github_oauth_secret:
+                type: str
+                description: "Required if github_oauth is enabled."
+            aws_access_key_id:
+                type: str
+                default: ""
+                description: "Access key for ephemeral builders."
+            aws_secret_access_key:
+                type: str
+                default: ""
+                description: "Secreet key for ephemeral builders."

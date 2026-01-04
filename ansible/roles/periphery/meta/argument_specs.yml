@@ -1,0 +1,37 @@
+argument_specs:
+    main:
+        short_description: "Installs and configures Periphery."
+        options:
+            komodo_passkey:
+                type: str
+                required: true
+                description: "Secure passkey to authenticate between Core / Periphery."
+            version:
+                type: str
+                default: latest
+                description: "Version of the docker image to use."
+            root_directory:
+                type: str
+                default: /etc/komodo
+                description: "The directory periphery will use as the default base for the directories it uses."
+            periphery_port:
+                type: int
+                default: 8120
+                description: "The port the server runs on."
+            ssl_enabled:
+                type: bool
+                default: true
+                description: "Enable HTTPS server using the given key and cert."
+            allowed_ips:
+                type: list
+                elements: str
+                default: []
+                description: "Optional. Limit the ip addresses which can call the periphery api."
+            restart:
+                type: str
+                default: unless-stopped
+                choices:
+                    - "no"
+                    - "always"
+                    - "on-failure"
+                    - "unless-stopped"

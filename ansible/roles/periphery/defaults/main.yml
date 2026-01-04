@@ -1,0 +1,10 @@
+---
+version: "latest"
+
+root_directory: /etc/komodo
+
+periphery_port: 8120
+ssl_enabled: true
+allowed_ips: ""
+
+restart: unless-stopped
