@@ -62,6 +62,14 @@ argument_specs:
                 type: str
                 default: "1-day"
                 description: "Specify how long a user can stay logged in before they have to log in again."
+            init_admin_username:
+                type: str
+                default: "admin"
+                description: "Initialize the first admin user when starting up Komodo for the first time."
+            init_admin_password:
+                type: str
+                default: "changeme"
+                description: "Set password for first admin user."
             local_auth:
                 type: bool
                 default: false
