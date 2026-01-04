@@ -49,3 +49,13 @@ github_oauth_enabled: false
 ###################
 aws_access_key_id: ""
 aws_secret_access_key: ""
+
+#=------------------------------=#
+#= Komodo Periphery Environment =#
+#=------------------------------=#
+periphery_root_directory: "/etc/komodo"
+periphery_disable_terminals: false
+periphery_ssl_enabled: true
+periphery_include_disk_mounts: "/etc/hostname"
+periphery_logging_pretty: false
+periphery_pretty_startup_config: false

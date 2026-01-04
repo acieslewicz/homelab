@@ -148,3 +148,28 @@ argument_specs:
                 type: str
                 default: ""
                 description: "Secreet key for ephemeral builders."
+            periphery_root_directory:
+                type: str
+                default: /etc/komodo
+                description: "The directory periphery will use as the default base for the directories it uses."
+            periphery_disable_terminals:
+                type: bool
+                default: false
+                description: "Specify whether to disable the terminals features and disallow remote shell access."
+            periphery_ssl_enabled:
+                type: bool
+                default: true
+                description: "Enable SSL using self signed certificates."
+            periphery_include_disk_mounts:
+                type: list
+                elements: str
+                default: []
+                description: "If the disk size is overreporting, can use this to whitelist them."
+            periphery_logging_pretty:
+                type: str
+                default: false
+                description: "Enable pretty logging on periphery."
+            periphery_pretty_startup_config:
+                type: str
+                default: false
+                description: "Enable pretty logging on periphery startup."

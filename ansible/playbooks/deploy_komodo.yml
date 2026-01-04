@@ -14,7 +14,3 @@
             first_server: "https://periphery:8120"
             timezone: "America/Denver"
             host: "https://komodo.home.tinymagellanic.cloud"
-      - role: periphery
-        vars:
-            version: latest
-            komodo_passkey: "{{ lookup('bitwarden.secrets.lookup', komodo_secrets.passkey) }}"
