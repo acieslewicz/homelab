@@ -21,6 +21,9 @@ webhook_secret: ""
 jwt_secret: ""
 jwt_ttl: "1-day"
 
+init_admin_username: admin
+init_admin_password: changeme
+
 local_auth: false
 disable_user_registration: false
 enable_new_users: false
