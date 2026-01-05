@@ -30,8 +30,8 @@ services:
         env_file: .env
         volumes:
             - "socket-proxy.run:/var/run"
-            - ./traefik.yml:/etc/traefik/traefik.yml:ro
-            - ./config.yml:/etc/traefik/config.yml:ro
+            - ./traefik.yaml:/etc/traefik/traefik.yaml:ro
+            - ./config.yaml:/etc/traefik/config.yaml:ro
             - "var:/traefik/var"
         networks:
             backend:
