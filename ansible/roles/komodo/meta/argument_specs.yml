@@ -148,6 +148,39 @@ argument_specs:
                 type: str
                 default: ""
                 description: "Secreet key for ephemeral builders."
+            git_providers:
+                type: list
+                elements: dict
+                default: []
+                description: "Git provider configurations for accessing private repositories."
+                options:
+                    domain:
+                        type: str
+                        required: true
+                        description: "Git provider domain (e.g., github.com, gitlab.com)."
+                    https:
+                        type: bool
+                        default: true
+                        description: "Whether to use HTTPS (true) or HTTP (false)."
+                    accounts:
+                        type: list
+                        elements: dict
+                        required: true
+                        description: "List of accounts with access tokens."
+                        options:
+                            username:
+                                type: str
+                                required: true
+                                description: "Username for the git provider account."
+                            token:
+                                type: str
+                                required: true
+                                description: "Access token for authentication."
+            komodo_secrets_config:
+                type: dict
+                default: {}
+                description: "Application-level secrets available for interpolation into deployments and stacks. Keys are secret names, values are secret values."
+
             periphery_root_directory:
                 type: str
                 default: /etc/komodo

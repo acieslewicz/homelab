@@ -1,5 +1,6 @@
 komodo_secrets:
-  database_password: "610c208e-552a-4e5d-b78b-b33900f79724"
-  passkey: "610c208e-552a-4e5d-b78b-b33900f79724"
-  webhook_secret: "6287c55d-8570-4460-8523-b33900f6fa0e"
-  jwt_secret: "9fd8da6e-e82e-441a-a3ef-b33900f1d543"
+    database_password: "610c208e-552a-4e5d-b78b-b33900f79724"
+    passkey: "610c208e-552a-4e5d-b78b-b33900f79724"
+    webhook_secret: "6287c55d-8570-4460-8523-b33900f6fa0e"
+    jwt_secret: "9fd8da6e-e82e-441a-a3ef-b33900f1d543"
+    homelab_repo_access_token: "0348ae69-a653-4353-a3e6-b3c9003bd15a"

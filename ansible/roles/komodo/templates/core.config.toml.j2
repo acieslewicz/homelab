@@ -1,0 +1,36 @@
+###########################
+# 🦎 KOMODO CORE CONFIG 🦎 #
+###########################
+
+## Managed by Ansible - Do not edit manually!
+## Generated on {{ ansible_date_time.iso8601 }}
+
+#################
+# GIT PROVIDERS #
+#################
+
+{% if git_providers is defined and git_providers | length > 0 %}
+{% for provider in git_providers %}
+[[git_provider]]
+domain = "{{ provider.domain }}"
+{% if provider.https is defined %}
+https = {{ provider.https | lower }}
+{% endif %}
+accounts = [
+{% for account in provider.accounts %}
+    { username = "{{ account.username }}", token = "{{ account.token }}" },
+{% endfor %}
+]
+{% endfor %}
+{% endif %}
+
+###########
+# SECRETS #
+###########
+
+{% if komodo_secrets_config is defined and komodo_secrets_config | length > 0 %}
+[secrets]
+{% for key, value in komodo_secrets_config.items() %}
+{{ key }} = "{{ value }}"
+{% endfor %}
+{% endif %}

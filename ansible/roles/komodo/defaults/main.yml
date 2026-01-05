@@ -59,3 +59,13 @@ periphery_ssl_enabled: true
 periphery_include_disk_mounts: "/etc/hostname"
 periphery_logging_pretty: false
 periphery_pretty_startup_config: false
+
+#=---------------=#
+#= Git providers =#
+#=---------------=#
+git_providers: []
+
+#=---------=#
+#= Secrets =#
+#=---------=#
+komodo_secrets: {}

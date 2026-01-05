@@ -28,6 +28,7 @@ services:
             KOMODO_DATABASE_PASSWORD: ${KOMODO_DB_PASSWORD}
         volumes:
             - ${COMPOSE_KOMODO_BACKUPS_PATH}:/backups
+            - {{ komodo_dir }}/config/core.config.toml:/config/config.toml:ro
 
     periphery:
         image: ghcr.io/moghtech/komodo-periphery:${COMPOSE_KOMODO_IMAGE_TAG:-latest}

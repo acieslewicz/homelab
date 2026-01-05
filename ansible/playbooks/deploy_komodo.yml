@@ -14,3 +14,8 @@
             first_server: "https://periphery:8120"
             timezone: "America/Denver"
             host: "https://komodo.home.tinymagellanic.cloud"
+            git_providers:
+                - domain: "github.com"
+                  accounts:
+                      - username: "acieslewicz"
+                      - token: "{{ lookup('bitwarden.secrets.lookup', 'komodo_secrets.homelab_repo_access_token') }}"
