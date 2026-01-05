@@ -27,6 +27,7 @@ services:
         environment:
             TZ: "America/Denver"
             TRAEFIK_DASHBOARD_CREDENTIALS: ${TRAEFIK_DASHBOARD_CREDENTIALS}
+            CF_DNS_API_TOKEN: ${CF_DNS_API_TOKEN}
         env_file: .env
         volumes:
             - "socket-proxy.run:/var/run"
