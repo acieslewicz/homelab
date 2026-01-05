@@ -1,78 +1,75 @@
 http:
-  routers:
-    komodo:
-      entryPoints:
-        - "https"
-      rule: "Host(`komodo.home.tinymagellanic.cloud`)"
-      middlewares:
-        - default-headers
-      tls:
-        certResolver: letsencrypt
-        domains:
-          - main: "home.tinymagellanic.cloud"
-            sans: ["*.tinymagellanic.cloud"]
-      service: komodo
-    docling:
-      entryPoints:
-        - "https"
-      rule: "Host(`docling.home.tinymagellanic.cloud`) || Host(`docling.tinymagellanic.cloud`)"
-      middlewares:
-        - default-headers
-      tls:
-        certResolver: letsencrypt
-        domains:
-          - main: "tinymagellanic.cloud"
-            sans: ["*.tinymagellanic.cloud"]
-      service: docling 
-    vllm:
-      entryPoints:
-        - "https"
-      rule: "Host(`vllm.home.tinymagellanic.cloud`)"
-      middlewares:
-        - default-headers
-      tls:
-        certResolver: letsencrypt
-        domains:
-          - main: "tinymagellanic.cloud"
-            sans: ["*.tinymagellanic.cloud"]
-      service: vllm
-  services:
-    komodo:
-      loadBalancer:
-        servers:
-          - url: "http://192.168.100.60:9120"
-        passHostHeader: true
-    docling:
-      loadBalancer:
-        servers:
-          - url: "http://192.168.110.20:5001"
-        passHostHeader: true
-    vllm:
-      loadBalancer:
-        servers:
-          - url: "http://192.168.110.20:8000"
-        passHostHeader: true
-  middlewares:
-    default-headers:
-      headers:
-        frameDeny: true
-        browserXssFilter: true
-        contentTypeNosniff: true
-        forceSTSHeader: true
-        stsIncludeSubdomains: true
-        stsPreload: true
-        stsSeconds: 15552000
-        customFrameOptionsValue: SAMEORIGIN
+    routers:
+        komodo:
+            entryPoints:
+                - "https"
+            rule: "Host(`komodo.home.tinymagellanic.cloud`)"
+            middlewares:
+                - default-headers
+            tls:
+                certResolver: letsencrypt
+                domains:
+                    - main: "*.home.tinymagellanic.cloud"
+            service: komodo
+        docling:
+            entryPoints:
+                - "https"
+            rule: "Host(`docling.home.tinymagellanic.cloud`) || Host(`docling.tinymagellanic.cloud`)"
+            middlewares:
+                - default-headers
+            tls:
+                certResolver: letsencrypt
+                domains:
+                    - main: "*.tinymagellanic.cloud"
+            service: docling
+        vllm:
+            entryPoints:
+                - "https"
+            rule: "Host(`vllm.home.tinymagellanic.cloud`)"
+            middlewares:
+                - default-headers
+            tls:
+                certResolver: letsencrypt
+                domains:
+                    - main: "*home.tinymagellanic.cloud"
+            service: vllm
+    services:
+        komodo:
+            loadBalancer:
+                servers:
+                    - url: "http://192.168.100.60:9120"
+                passHostHeader: true
+        docling:
+            loadBalancer:
+                servers:
+                    - url: "http://192.168.110.20:5001"
+                passHostHeader: true
+        vllm:
+            loadBalancer:
+                servers:
+                    - url: "http://192.168.110.20:8000"
+                passHostHeader: true
+    middlewares:
+        default-headers:
+            headers:
+                frameDeny: true
+                browserXssFilter: true
+                contentTypeNosniff: true
+                forceSTSHeader: true
+                stsIncludeSubdomains: true
+                stsPreload: true
+                stsSeconds: 15552000
+                customFrameOptionsValue: SAMEORIGIN
 
-    default-whitelist:
-      ipAllowList:
-        sourceRange:
-        - "10.0.0.0/8"
-        - "192.168.0.0/16"
-        - "172.16.0.0/12"
+        default-whitelist:
+            ipAllowList:
+                sourceRange:
+                    - "10.0.0.0/8"
+                    - "192.168.0.0/16"
+                    - "172.16.0.0/12"
 
-    secured:
-      chain:
-        middlewares:
-        - default-whitelist
-        - default-headers
+        secured:
+            chain:
+                middlewares:
+                    - default-whitelist
+                    - default-headers
