@@ -9,6 +9,8 @@ resource "proxmox_virtual_environment_file" "cloud_config" {
     timezone: America/Denver
     ssh_pwauth: false
     disable_root: true
+    groups:
+      - docker: [989]
     users:
       - name: administrator
         groups:
