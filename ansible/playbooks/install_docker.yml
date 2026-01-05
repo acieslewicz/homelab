@@ -1,13 +1,13 @@
 ---
 - name: Install Docker
   hosts: proxmox_docker, ml_servers
-  become: yes
-  gather_facts: yes
+  become: true
+  gather_facts: true
 
   vars:
-    docker_users:
-      - "{{ lookup('env', 'ANSIBLE_REMOTE_USER') }}"
-    docker_install_compose_plugin: true
-  
+      docker_users:
+          - "{{ lookup('env', 'ANSIBLE_REMOTE_USER') }}"
+      docker_install_compose_plugin: true
+
   roles:
-    - geerlingguy.docker
+      - geerlingguy.docker
