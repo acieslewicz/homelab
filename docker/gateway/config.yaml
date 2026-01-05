@@ -31,7 +31,7 @@ http:
             tls:
                 certResolver: letsencrypt
                 domains:
-                    - main: "*home.tinymagellanic.cloud"
+                    - main: "*.home.tinymagellanic.cloud"
             service: vllm
     services:
         komodo:
