@@ -18,4 +18,4 @@
                 - domain: "github.com"
                   accounts:
                       - username: "acieslewicz"
-                      - token: "{{ lookup('bitwarden.secrets.lookup', komodo_secrets.homelab_repo_access_token) }}"
+                        token: "{{ lookup('bitwarden.secrets.lookup', komodo_secrets.homelab_repo_access_token) }}"
