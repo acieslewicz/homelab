@@ -27,7 +27,7 @@
             webhook_secret: "{{ lookup('bitwarden.secrets.lookup', komodo_secrets.webhook_secret) }}"
             first_server: "https://periphery:8120"
             timezone: "America/Denver"
-            host: "https://komodo.tinymagellanic.cloud"
+            host: "https://komodo.home.tinymagellanic.cloud"
             git_providers:
                 - domain: "github.com"
                   accounts:
