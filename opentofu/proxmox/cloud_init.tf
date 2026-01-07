@@ -9,8 +9,6 @@ resource "proxmox_virtual_environment_file" "cloud_config" {
     timezone: America/Denver
     ssh_pwauth: false
     disable_root: true
-    groups:
-      - docker: [989]
     users:
       - name: administrator
         groups:
@@ -23,6 +21,7 @@ resource "proxmox_virtual_environment_file" "cloud_config" {
     packages:
       - qemu-guest-agent
     runcmd:
+      - groupadd -g 989 docker
       - systemctl enable qemu-guest-agent
       - systemctl start qemu-guest-agent
       - echo "done" > /tmp/cloud-config.done
