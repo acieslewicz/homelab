@@ -3,7 +3,20 @@
   hosts: proxmox_periphery
   become: true
 
+  vars:
+      docker_users:
+          - "{{ lookup('env', 'ANSIBLE_REMOTE_USER') }}"
+      docker_install_compose_plugin: true
+
+  pre_tasks:
+      - name: Ensure group "docker" exists with correct gid
+        group:
+            name: docker
+            state: present
+            gid: 989
+
   roles:
+      - geerlingguy.docker
       - role: periphery
         vars:
             version: latest
