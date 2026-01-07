@@ -26,7 +26,7 @@
             komodo_passkey: "{{ lookup('bitwarden.secrets.lookup', komodo_secrets.passkey) }}"
             first_server: "https://periphery:8120"
             timezone: "America/Denver"
-            host: "https://komodo.home.tinymagellanic.cloud"
+            host: "https://komodo.tinymagellanic.cloud"
             git_providers:
                 - domain: "github.com"
                   accounts:

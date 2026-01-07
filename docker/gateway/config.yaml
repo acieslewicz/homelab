@@ -3,13 +3,14 @@ http:
         komodo:
             entryPoints:
                 - "https"
-            rule: "Host(`komodo.home.tinymagellanic.cloud`)"
+            rule: "Host(`komodo.home.tinymagellanic.cloud`) || Host(`komodo.tinymagellanic.cloud`)"
             middlewares:
                 - default-headers
             tls:
                 certResolver: letsencrypt
                 domains:
                     - main: "*.home.tinymagellanic.cloud"
+                    - main: "*.tinymagellanic.cloud"
             service: komodo
         docling:
             entryPoints:
