@@ -32,7 +32,7 @@ jobs:
           ssh-private-key: ${{ secrets.HOMELAB_SSH_PRIVATE_KEY }}
 
       - name: Set up Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
       
       - name: Install ansible & dependencies
         run: pip install ansible requests bitwarden-sdk
