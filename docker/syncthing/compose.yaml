@@ -37,5 +37,5 @@ volumes:
         driver: local
         driver_opts:
             type: nfs
-            o: "addr=nfs-01.home.tinymagellanic.cloud,rw"
+            o: "addr=nas-01.home.tinymagellanic.cloud,rw"
             device: ":/var/nfs/shared/syncthing"
