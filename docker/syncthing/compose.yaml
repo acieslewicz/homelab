@@ -1,0 +1,41 @@
+name: "syncthing"
+x-lockdown: &lockdown
+    read_only: true
+    security_opt:
+        - "no-new-privileges=true"
+services:
+    syncthing:
+        image: "syncthing/syncthing:2.0.13"
+        container_name: syncthing
+        environment:
+            TZ: "America/Denver"
+        <<: *lockdown
+        volumes:
+            - syncthing:/var/syncthing
+        network_mode: host
+        restart: unless-stopped
+        healthcheck:
+            test: curl -fkLsS -m 2 127.0.0.1:8384/rest/noauth/health | grep -o --color=never OK || exit 1
+            interval: 1m
+            timeout: 10s
+            retries: 3
+        labels:
+            - "traefik.enable=true"
+            - "traefik.http.routers.syncthing.entrypoints=http"
+            - "traefik.http.routers.syncthing.rule=Host(`syncthing.home.tinymagellanic.cloud`)"
+            - "traefik.http.middlewares.syncthing-https-redirect.redirectscheme.scheme=https"
+            - "traefik.http.routers.syncthing.middlewares=syncthing-https-redirect"
+            - "traefik.http.routers.syncthing-secure.entrypoints=https"
+            - "traefik.http.routers.syncthing-secure.rule=Host(`syncthing.home.tinymagellanic.cloud`)"
+            - "traefik.http.routers.syncthing-secure.tls=true"
+            - "traefik.http.routers.syncthing-secure.tls.certresolver=letsencrypt"
+            - "traefik.http.routers.traefik-secure.tls.domains[0].main=*.home.tinymagellanic.cloud"
+            - "traefik.http.services.syncthing.loadbalancer.server.url=http://docker-01.home.tinymagellanic.cloud:8384"
+
+volumes:
+    syncthing:
+        driver: local
+        driver_opts:
+            type: nfs
+            o: "addr=nfs-01.home.tinymagellanic.cloud,rw"
+            device: ":/var/nfs/shared/syncthing"
