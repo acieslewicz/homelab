@@ -30,12 +30,12 @@ services:
             - "traefik.http.routers.syncthing-secure.tls=true"
             - "traefik.http.routers.syncthing-secure.tls.certresolver=letsencrypt"
             - "traefik.http.routers.traefik-secure.tls.domains[0].main=*.home.tinymagellanic.cloud"
-            - "traefik.http.services.syncthing.loadbalancer.server.url=http://docker-01.home.tinymagellanic.cloud:8384"
+            - "traefik.http.services.syncthing.loadbalancer.server.url=http://192.168.100.50:8384"
 
 volumes:
     syncthing:
         driver: local
         driver_opts:
             type: nfs
-            o: "addr=nas-01.home.tinymagellanic.cloud,rw"
+            o: "addr=192.168.1.185,rw"
             device: ":/var/nfs/shared/syncthing"
