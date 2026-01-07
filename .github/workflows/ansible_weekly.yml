@@ -17,7 +17,7 @@ jobs:
             sudo wg-quick up ./wg0.conf
 
       - name: Checkout repository
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
 
       - name: Setup SSH key
         uses: webfactory/ssh-agent@v0.9.1
