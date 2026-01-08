@@ -5,10 +5,11 @@ services:
         container_name: syncthing
         environment:
             TZ: "America/Denver"
+            STHOMEDIR: /etc/syncthing/config
         read_only: true
         volumes:
-            - syncthing_config:/var/syncthing/config
-            - syncthing_data:/var/syncthing/data
+            - syncthing.data:/var/syncthing
+            - syncthing.config:/etc/syncthing
         network_mode: host
         restart: unless-stopped
         healthcheck:
@@ -30,8 +31,8 @@ services:
             - "traefik.http.services.syncthing.loadbalancer.server.url=http://192.168.100.50:8384"
 
 volumes:
-    syncthing_config:
-    syncthing_data:
+    syncthing.config:
+    syncthing.data:
         driver: local
         driver_opts:
             type: nfs
