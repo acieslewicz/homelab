@@ -5,11 +5,10 @@ services:
         container_name: syncthing
         environment:
             TZ: "America/Denver"
-            STHOMEDIR: /etc/syncthing/config
         read_only: true
         volumes:
             - syncthing.data:/var/syncthing
-            - syncthing.config:/etc/syncthing
+            - syncthing.config:/var/syncthing/config
         network_mode: host
         restart: unless-stopped
         healthcheck:
