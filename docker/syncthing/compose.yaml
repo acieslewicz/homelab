@@ -11,7 +11,8 @@ services:
             TZ: "America/Denver"
         <<: *lockdown
         volumes:
-            - syncthing:/var/syncthing
+            - syncthing_config:/var/syncthing/config
+            - syncthing_data:/var/syncthing
         network_mode: host
         restart: unless-stopped
         healthcheck:
@@ -33,7 +34,8 @@ services:
             - "traefik.http.services.syncthing.loadbalancer.server.url=http://192.168.100.50:8384"
 
 volumes:
-    syncthing:
+    syncthing_config:
+    syncthing_data:
         driver: local
         driver_opts:
             type: nfs
