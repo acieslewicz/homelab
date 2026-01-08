@@ -1,5 +1,11 @@
 name: "syncthing"
 services:
+    files-init:
+        image: alpine
+        restart: no
+        entrypoint: /bin/sh -c "chown 1000:1000 /var/syncthing/config"
+        volumes:
+            - syncthing.config:/var/syncthing/config
     syncthing:
         image: "syncthing/syncthing:2.0.13"
         container_name: syncthing
@@ -11,6 +17,8 @@ services:
             - syncthing.config:/var/syncthing/config
         network_mode: host
         restart: unless-stopped
+        depends_on:
+            - files-init
         healthcheck:
             test: curl -fkLsS -m 2 127.0.0.1:8384/rest/noauth/health | grep -o --color=never OK || exit 1
             interval: 1m
