@@ -1,15 +1,11 @@
 name: "syncthing"
-x-lockdown: &lockdown
-    read_only: true
-    security_opt:
-        - "no-new-privileges=true"
 services:
     syncthing:
         image: "syncthing/syncthing:2.0.13"
         container_name: syncthing
         environment:
             TZ: "America/Denver"
-        <<: *lockdown
+        read_only: true
         volumes:
             - syncthing_config:/var/syncthing/config
             - syncthing_data:/var/syncthing/data
