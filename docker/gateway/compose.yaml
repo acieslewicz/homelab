@@ -5,7 +5,7 @@ x-lockdown: &lockdown
         - "no-new-privileges=true"
 services:
     socket-proxy:
-        image: "11notes/socket-proxy:2.1.6"
+        image: "11notes/socket-proxy:2.1.7"
         <<: *lockdown
         user: "0:${DOCKER_GID:-1000}"
         environment:
