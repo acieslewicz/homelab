@@ -7,7 +7,7 @@ services:
         volumes:
             - syncthing.config:/var/syncthing/config
     syncthing:
-        image: "syncthing/syncthing:2.0.13"
+        image: "syncthing/syncthing:2.0.15"
         container_name: syncthing
         environment:
             TZ: "America/Denver"
