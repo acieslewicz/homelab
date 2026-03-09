@@ -53,7 +53,7 @@ services:
             - "traefik.http.routers.traefik-secure.tls.domains[0].main=*.home.tinymagellanic.cloud"
             - "traefik.http.routers.traefik-secure.service=api@internal"
     cloudflare-tunnel:
-        image: cloudflare/cloudflared:2025.11.1
+        image: cloudflare/cloudflared:2026.3.0
         environment:
             TZ: "America/Denver"
             CF_TUNNEL_TOKEN: ${CF_TUNNEL_TOKEN}
