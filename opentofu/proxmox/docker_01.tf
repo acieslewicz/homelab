@@ -1,4 +1,4 @@
-resource "proxmox_virtual_environment_vm" "gateway" {
+resource "proxmox_virtual_environment_vm" "docker_01" {
   name      = "docker-01"
   node_name = "proxmox-01"
   tags      = ["tofu", "ansible", "docker", "periphery"]

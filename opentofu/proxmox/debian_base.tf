@@ -1,5 +1,6 @@
 resource "proxmox_virtual_environment_vm" "debian_template" {
   name      = "debian-template"
+  vm_id     = 100
   node_name = "proxmox-01"
   tags      = ["tofu"]
 
@@ -29,7 +30,7 @@ resource "proxmox_virtual_environment_vm" "debian_template" {
 
   disk {
     datastore_id = "local-data"
-    file_id      = proxmox_virtual_environment_download_file.debian_trixie_cloud_image.id
+    file_id      = proxmox_download_file.debian_trixie_cloud_image.id
     interface    = "virtio0"
     iothread     = true
     discard      = "on"
