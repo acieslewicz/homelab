@@ -1,4 +1,5 @@
 resource "proxmox_virtual_environment_vm" "komodo_data" {
+  name      = "komodo-data"
   node_name = "proxmox-01"
   started   = false
   on_boot   = false
