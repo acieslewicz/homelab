@@ -6,16 +6,14 @@ terraform {
     }
     bitwarden = {
       source  = "maxlaverse/bitwarden"
-      version = "0.16.0"
+      version = "0.17.6"
     }
   }
 }
 
 provider "bitwarden" {
-  access_token = var.bws_access_token
-  experimental {
-    embedded_client = true
-  }
+  access_token          = var.bws_access_token
+  client_implementation = "embedded"
 }
 
 provider "proxmox" {
