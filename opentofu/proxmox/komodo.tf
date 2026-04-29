@@ -1,3 +1,16 @@
+resource "proxmox_virtual_environment_vm" "komodo_data" {
+  node_name = "proxmox-01"
+  started   = false
+  on_boot   = false
+  tags      = ["tofu", "data"]
+
+  disk {
+    datastore_id = "local-data"
+    interface    = "scsi0"
+    size         = 40
+  }
+}
+
 resource "proxmox_virtual_environment_vm" "komodo" {
   name      = "komodo"
   node_name = "proxmox-01"
@@ -15,12 +28,17 @@ resource "proxmox_virtual_environment_vm" "komodo" {
     dedicated = 4096
   }
 
-  disk {
-    datastore_id = "local-data"
-    interface    = "virtio0"
-    iothread     = true
-    discard      = "on"
-    size         = 40
+  dynamic "disk" {
+    for_each = { for idx, val in proxmox_virtual_environment_vm.komodo_data.disk : idx => val }
+    iterator = data_disk
+
+    content {
+      datastore_id      = data_disk.value["datastore_id"]
+      path_in_datastore = data_disk.value["path_in_datastore"]
+      file_format       = data_disk.value["file_format"]
+      size              = data_disk.value["size"]
+      interface         = "scsi${data_disk.key + 1}"
+    }
   }
 
   initialization {
