@@ -1,9 +1,7 @@
 ---
-version: latest
+version: 2
 
 backups_path: /var/komodo/backups
-
-db_username: admin
 
 timezone: America/Denver
 
@@ -11,54 +9,84 @@ timezone: America/Denver
 #= Komodo Core Environment =#
 #=-------------------------=#
 title: Komodo
-first_server: ""
+komodo_port: 9120
+bind_ip: "[::]"
+
+private_key: file:/config/keys/core.key
+
+ui_write_disabled: false
 disable_confirm_dialog: false
+disable_websocket_reconnect: false
+disable_init_resources: false
 
-monitoring_interval: "15-sec"
-resource_poll_interval: "1-hr"
-
-webhook_secret: ""
-jwt_secret: ""
-jwt_ttl: "1-day"
-
-init_admin_username: admin
-init_admin_password: changeme
+#=--------------=#
+#= AUTH / LOGIN =#
+#=--------------=#
 
 local_auth: false
+min_password_length: 1
+init_admin_password: changeme 
+
 disable_user_registration: false
 enable_new_users: false
 disable_non_admin_create: false
 transparent_mode: false
 
-logging_pretty: false
-pretty_startup_config: false
+jwt_secret: ""
+jwt_ttl: "1-day"
 
 #=-----------=#
 #= OIDC Auth =#
 #=-----------=#
 oidc_enabled: false
 
-#########
-# OAUTH #
-#########
+#=-------=#
+#= OAUTH =#
+#=-------=#
 google_oauth_enabled: false
 github_oauth_enabled: false
 
-###################
-# CLOUD PROVIDERS #
-###################
+#=---------------------=#
+#= Auth Rate Limiting  =#
+#=---------------------=#
+
+auth_rate_limit_disabled: false
+auth_rate_limit_max_attempts: 5
+auth_rate_limit_window_seconds: 15
+
+#=------------------=#
+#= Poll Intervals   =#
+#=------------------=#
+
+monitoring_interval: "15-sec"
+resource_poll_interval: "1-hr"
+
+#=----------=#
+#= DATABASE =#
+#=----------=#
+
+db_username: admin
+
+#=-----------=#
+#= Webhooks  =#
+#=-----------=#
+
+webhook_secret: ""
+webhook_base_url: ""
+
+#=---------=#
+#= Logging =#
+#=---------=#
+
+logging_pretty: false
+pretty_startup_config: false
+
+#=-----------------=#
+#= Cloud Providers =#
+#=-----------------=#
+
 aws_access_key_id: ""
 aws_secret_access_key: ""
-
-#=------------------------------=#
-#= Komodo Periphery Environment =#
-#=------------------------------=#
-periphery_root_directory: "/etc/komodo"
-periphery_disable_terminals: false
-periphery_ssl_enabled: true
-periphery_include_disk_mounts: "/etc/hostname"
-periphery_logging_pretty: false
-periphery_pretty_startup_config: false
 
 #=---------------=#
 #= Git providers =#

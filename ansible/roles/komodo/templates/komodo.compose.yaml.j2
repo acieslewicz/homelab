@@ -9,13 +9,12 @@ services:
             - mongo-data:/data/db
             - mongo-config:/data/configdb
         environment:
-            MONGO_INITDB_ROOT_USERNAME: ${KOMODO_DB_USERNAME}
-            MONGO_INITDB_ROOT_PASSWORD: ${KOMODO_DB_PASSWORD}
+            MONGO_INITDB_ROOT_USERNAME: ${KOMODO_DATABASE_USERNAME}
+            MONGO_INITDB_ROOT_PASSWORD: ${KOMODO_DATABASE_PASSWORD}
 
     core:
-        image: ghcr.io/moghtech/komodo-core:${COMPOSE_KOMODO_IMAGE_TAG:-latest}
-        labels:
-            komodo.skip:
+        image: ghcr.io/moghtech/komodo-core:${COMPOSE_KOMODO_IMAGE_TAG:-2}
+        init: true
         restart: unless-stopped
         depends_on:
             - mongo
@@ -24,23 +23,12 @@ services:
         env_file: "{{ env_file }}"
         environment:
             KOMODO_DATABASE_ADDRESS: mongo:27017
-            KOMODO_DATABASE_USERNAME: ${KOMODO_DB_USERNAME}
-            KOMODO_DATABASE_PASSWORD: ${KOMODO_DB_PASSWORD}
         volumes:
+            - keys:/config/keys
             - ${COMPOSE_KOMODO_BACKUPS_PATH}:/backups
             - {{ komodo_dir }}/config/core.config.toml:/config/config.toml:ro
-
-    periphery:
-        image: ghcr.io/moghtech/komodo-periphery:${COMPOSE_KOMODO_IMAGE_TAG:-latest}
-        labels:
-            komodo.skip:
-        restart: unless-stopped
-        env_file: "{{ env_file }}"
-        volumes:
-            - /var/run/docker.sock:/var/run/docker.sock
-            - /proc:/proc
-            - ${PERIPHERY_ROOT_DIRECTORY:-/etc/komodo}:${PERIPHERY_ROOT_DIRECTORY:-/etc/komodo}
 
 volumes:
     mongo-data:
     mongo-config:
+    keys:

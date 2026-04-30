@@ -1,47 +1,188 @@
 argument_specs:
     main:
-        short_description: "Installs and configured Komodo."
+        short_description: "Installs and configures Komodo."
         options:
             version:
                 type: str
-                default: latest
+                default: 2
                 description: "Version of the docker image to use."
             backups_path:
                 type: str
                 default: /var/komodo/backups
                 description: "Path to Komodo backups."
-            db_username:
-                type: str
-                default: admin
-                description: "Username for the database."
-            db_password:
-                type: str
-                required: true
-                description: "Password for the database."
             timezone:
                 type: str
                 required: true
                 description: "Komodo timezone configuration."
-            komodo_passkey:
-                type: str
-                required: true
-                description: "Secure passkey to authenticate between Core / Periphery."
+
+            #=-------------------------=#
+            #= Komodo Core Environment =#
+            #=-------------------------=#
+
             title:
                 type: str
                 default: Komodo
-                description: "This is the document title on the web page."
+                description: "The document title shown on the web page."
             host:
                 type: str
                 required: true
-                description: "This should be the url used to access Komodo in browser, potentially behind DNS."
-            first_server:
+                description: "The url used to access Komodo in the browser, potentially behind DNS. E.g. https://komodo.example.com"
+            komodo_port:
+                type: int
+                default: 9120
+                description: "The port the core system will run on."
+            bind_ip:
                 type: str
-                default: ""
-                description: "Ensure a server with this address exists on Core"
+                default: "[::]"
+                description: "The IP address the core server will bind to. Default allows external IPv4 and IPv6 connections."
+            private_key:
+                type: str
+                default: "file:/config/keys/core.key"
+                description: "Default private key to use with Noise handshake to authenticate with Periphery agents."
+            periphery_public_key:
+                type: str
+                description: "Default accepted public key to allow Periphery to connect. Accepts public key files using file:/path/to/periphery.pub"
+            first_server_name:
+                type: str
+                description: "Give the first server a custom name. If set but first_server_address is not, assumes Periphery -> Core connection."
+            first_server_address:
+                type: str
+                description: "Ensure a server with this address exists on Core upon first startup. Example: https://periphery:8120"
+            ui_write_disabled:
+                type: bool
+                default: false
+                description: "Disables write support on resources in the UI."
             disable_confirm_dialog:
                 type: bool
                 default: false
-                description: "Disabled the confirm dialogs on all actions. All buttons will now be double-click."
+                description: "Disables the confirm dialogs on all actions. All buttons will now be double-click."
+            disable_websocket_reconnect:
+                type: bool
+                default: false
+                description: "Disables UI websocket automatic reconnection."
+            disable_init_resources:
+                type: bool
+                default: false
+                description: "Disable init system resource creation on fresh Komodo launch (e.g. Backup Core Database and Global Auto Update procedures)."
+
+            #=--------------=#
+            #= AUTH / LOGIN =#
+            #=--------------=#
+
+            local_auth:
+                type: bool
+                default: false
+                description: "Allow user login with a username / password."
+            min_password_length:
+                type: int
+                default: 1
+                description: "Configure a minimum password length."
+            init_admin_username:
+                type: str
+                description: "Initialize the first admin user when starting up Komodo for the first time."
+            init_admin_password:
+                type: str
+                default: "changeme"
+                description: "Set password for the first admin user."
+            disable_user_registration:
+                type: bool
+                default: false
+                description: "When true, only the first user to log in will be registered as a user."
+            enable_new_users:
+                type: bool
+                default: false
+                description: "New users will be automatically enabled when they sign up."
+            transparent_mode:
+                type: bool
+                default: false
+                description: "Allows all users to have Read level access to all resources."
+            disable_non_admin_create:
+                type: bool
+                default: false
+                description: "When true, only admin users can create resources."
+            jwt_secret:
+                type: str
+                default: ""
+                description: "Optionally provide a specific jwt secret. Empty string generates a new secret on every startup."
+            jwt_ttl:
+                type: str
+                default: "1-day"
+                description: "Specify how long a user can stay logged in before they have to log in again."
+
+            #=-----------=#
+            #= OIDC Auth =#
+            #=-----------=#
+
+            oidc_enabled:
+                type: bool
+                default: false
+                description: "Enable logins with configured OIDC provider."
+            oidc_provider:
+                type: str
+                description: "The OIDC provider address, including path. Must be reachable from the Komodo Core container."
+            oidc_redirect_host:
+                type: str
+                description: "OIDC user redirect host (browser-facing). If empty, oidc_provider host is used. Do not include the path."
+            oidc_client_id:
+                type: str
+                description: "Set the OIDC Client ID."
+            oidc_client_secret:
+                type: str
+                description: "Set the OIDC Client Secret. Not required if provider supports PKCE-only flow."
+            oidc_use_full_email:
+                type: bool
+                description: "If true, use the full email for usernames. Otherwise the @address portion is stripped."
+            oidc_additional_audiences:
+                type: list
+                elements: str
+                description: "Additional trusted audiences beyond the client_id. Use if you see 'Invalid audiences' errors."
+
+            #=-------=#
+            #= OAUTH =#
+            #=-------=#
+
+            google_oauth_enabled:
+                type: bool
+                default: false
+                description: "Enable Google OAuth."
+            google_oauth_id:
+                type: str
+                description: "Google OAuth client ID. Required if google_oauth_enabled is true."
+            google_oauth_secret:
+                type: str
+                description: "Google OAuth client secret. Required if google_oauth_enabled is true."
+            github_oauth_enabled:
+                type: bool
+                default: false
+                description: "Enable GitHub OAuth."
+            github_oauth_id:
+                type: str
+                description: "GitHub OAuth client ID. Required if github_oauth_enabled is true."
+            github_oauth_secret:
+                type: str
+                description: "GitHub OAuth client secret. Required if github_oauth_enabled is true."
+
+            #=---------------------=#
+            #= Auth Rate Limiting  =#
+            #=---------------------=#
+
+            auth_rate_limit_disabled:
+                type: bool
+                default: false
+                description: "Disable the global auth failure rate limiter by client IP address."
+            auth_rate_limit_max_attempts:
+                type: int
+                default: 5
+                description: "Max failed auth attempts allowed within the rate limit window before the client is blocked."
+            auth_rate_limit_window_seconds:
+                type: int
+                default: 15
+                description: "The rate limiting window in seconds."
+
+            #=------------------=#
+            #= Poll Intervals   =#
+            #=------------------=#
+
             monitoring_interval:
                 type: str
                 default: "15-sec"
@@ -50,104 +191,63 @@ argument_specs:
                 type: str
                 default: "1-hr"
                 description: "Interval at which to poll Resources for any updates / automated actions."
+
+            #=----------=#
+            #= DATABASE =#
+            #=----------=#
+
+            db_username:
+                type: str
+                default: admin
+                description: "Username for the database."
+            db_password:
+                type: str
+                required: true
+                description: "Password for the database."
+
+            #=-----------=#
+            #= Webhooks  =#
+            #=-----------=#
+
             webhook_secret:
                 type: str
                 default: ""
-                description: "This token must be given to a git provider during repo webhook config."
-            jwt_secret:
+                description: "Token given to the git provider during repo webhook config. Must match the secret configured on the provider side."
+            webhook_base_url:
                 type: str
                 default: ""
-                description: "Optionally provide a specific jwt secret."
-            jwt_ttl:
-                type: str
-                default: "1-day"
-                description: "Specify how long a user can stay logged in before they have to log in again."
-            init_admin_username:
-                type: str
-                default: "admin"
-                description: "Initialize the first admin user when starting up Komodo for the first time."
-            init_admin_password:
-                type: str
-                default: "changeme"
-                description: "Set password for first admin user."
-            local_auth:
-                type: bool
-                default: false
-                description: "Allow user login with a username / password."
-            disable_user_registration:
-                type: bool
-                default: false
-                description: "Normally new users will be registered, but not enabled until an Admin enables them."
-            enable_new_users:
-                type: bool
-                default: false
-                description: "New users will be automatically enabled when they sign up."
-            disable_non_admin_create:
-                type: bool
-                default: false
-                description: "Normally all enabled users can create resources."
-            transparent_mode:
-                type: bool
-                default: false
-                description: "Allows all users to ahve Read level access to all resources."
+                description: "Alternate base URL for receiving git webhook requests. Useful when Komodo is on an internal network behind a proxy."
+
+            #=---------=#
+            #= Logging =#
+            #=---------=#
+
             logging_pretty:
                 type: bool
                 default: false
-                description: "Specify whether logging is more human readable."
+                description: "Specify whether logging is more human readable. Note: single logs will span multiple lines."
             pretty_startup_config:
                 type: bool
                 default: false
-                description: "Specify whether startup config log is more human reasable (multi-line)."
-            oidc_enabled:
-                type: bool
-                default: false
-                description: "Enable logins with configured OIDC provider."
-            oidc_provider:
-                type: str
-                description: "Give the provider address."
-            oidc_redirect_host:
-                type: str
-                description: "Configure the OIDC user redirect host."
-            oidc_client_id:
-                type: str
-                description: "Set the OIDC Client ID."
-            oidc_client_secret:
-                type: str
-                description: "Set the OIDC Client Secret."
-            oidc_use_full_email:
-                type: str
-                description: "If true, use the full email for usernames."
-            oidc_additional_audiences:
-                type: list
-                description: "Some providers attach other audiences in addtion to the client_id."
-            google_oauth_enabled:
-                type: bool
-                default: false
-                description: "Enable google oauth."
-            google_oauth_id:
-                type: str
-                description: "Required if google_oauth is enabled."
-            google_oauth_secret:
-                type: str
-                description: "Required if google_oauth is enabled."
-            github_oauth_enabled:
-                type: bool
-                default: false
-                description: "Enable github oauth."
-            github_oauth_id:
-                type: str
-                description: "Required if github_oauth is enabled."
-            github_oauth_secret:
-                type: str
-                description: "Required if github_oauth is enabled."
+                description: "Specify whether startup config log is more human readable (multi-line)."
+
+            #=-----------------=#
+            #= Cloud Providers =#
+            #=-----------------=#
+
             aws_access_key_id:
                 type: str
                 default: ""
-                description: "Access key for ephemeral builders."
+                description: "AWS access key ID for ephemeral EC2 builders."
             aws_secret_access_key:
                 type: str
                 default: ""
-                description: "Secreet key for ephemeral builders."
+                description: "AWS secret access key for ephemeral EC2 builders."
+
+            #=-----------------=#
+            #= Git Providers   =#
+            #=-----------------=#
+
             git_providers:
                 type: list
                 elements: dict
@@ -176,34 +276,12 @@ argument_specs:
                                 type: str
                                 required: true
                                 description: "Access token for authentication."
+
+            #=---------=#
+            #= Secrets =#
+            #=---------=#
+
             komodo_secrets:
                 type: dict
                 default: {}
                 description: "Application-level secrets available for interpolation into deployments and stacks. Keys are secret names, values are secret values."
-            
-            periphery_root_directory:
-                type: str
-                default: /etc/komodo
-                description: "The directory periphery will use as the default base for the directories it uses."
-            periphery_disable_terminals:
-                type: bool
-                default: false
-                description: "Specify whether to disable the terminals features and disallow remote shell access."
-            periphery_ssl_enabled:
-                type: bool
-                default: true
-                description: "Enable SSL using self signed certificates."
-            periphery_include_disk_mounts:
-                type: list
-                elements: str
-                default: []
-                description: "If the disk size is overreporting, can use this to whitelist them."
-            periphery_logging_pretty:
-                type: str
-                default: false
-                description: "Enable pretty logging on periphery."
-            periphery_pretty_startup_config:
-                type: str
-                default: false
-                description: "Enable pretty logging on periphery startup."
-
