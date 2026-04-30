@@ -176,7 +176,7 @@ argument_specs:
                                 type: str
                                 required: true
                                 description: "Access token for authentication."
-            komodo_secrets_config:
+            komodo_secrets:
                 type: dict
                 default: {}
                 description: "Application-level secrets available for interpolation into deployments and stacks. Keys are secret names, values are secret values."

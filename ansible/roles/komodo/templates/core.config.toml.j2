@@ -28,9 +28,9 @@ accounts = [
 # SECRETS #
 ###########
 
-{% if komodo_secrets_config is defined and komodo_secrets_config | length > 0 %}
+{% if komodo_secrets is defined and komodo_secrets | length > 0 %}
 [secrets]
-{% for key, value in komodo_secrets_config.items() %}
+{% for key, value in komodo_secrets.items() %}
 {{ key }} = "{{ value }}"
 {% endfor %}
 {% endif %}
